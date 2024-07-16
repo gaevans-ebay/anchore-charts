@@ -2,6 +2,24 @@ apiVersion: v1
 entries:
   anchore-admission-controller:
   - apiVersion: v1
+    appVersion: 0.6.2
+    created: "2024-07-16T16:58:56.382164036Z"
+    description: A kubernetes admission controller for validating and mutating webhooks
+      that operates against Anchore Engine to make access decisions and annotations
+    digest: bdca24f8b2fe36affe914285b60d77f19e209249b20a8050224ee4748614f360
+    home: https://github.com/anchore/kubernetes-admission-controller
+    icon: https://anchoreprd.wpengine.com/wp-content/uploads/2021/12/favicon.png
+    kubeVersion: ^1.19.0-0
+    maintainers:
+    - email: zach@anchore.com
+      name: zhill
+    - email: bradyt@anchore.com
+      name: btodhunter
+    name: anchore-admission-controller
+    urls:
+    - https://github.com/gaevans-ebay/anchore-charts/releases/download/anchore-admission-controller-0.6.2/anchore-admission-controller-0.6.2.tgz
+    version: 0.6.2
+  - apiVersion: v1
     appVersion: 0.5.0
     created: "2024-04-11T22:49:28.996931112Z"
     description: A kubernetes admission controller for validating and mutating webhooks
@@ -3279,6 +3297,32 @@ entries:
     version: 1.7.0
   ecs-inventory:
   - apiVersion: v2
+    appVersion: 1.3.1
+    created: "2024-07-16T16:58:56.487635862Z"
+    description: A Helm chart for the Anchore ECS Inventory, which gathers an inventory
+      of images in use by Amazon Elastic Container Service (ECS).
+    digest: 1fab905bd1f8c113ae551c7ad26d65cbac5fe7354f809b4d57a2e251bde3489e
+    icon: https://anchore.com/wp-content/uploads/2016/08/anchore.png
+    keywords:
+    - analysis
+    - ecs
+    - docker
+    - anchore
+    - image
+    - inventory
+    - security
+    - scanner
+    maintainers:
+    - email: bradyt@anchore.com
+      name: btodhunter
+    - email: hung.nguyen@anchore.com
+      name: hn23
+    name: ecs-inventory
+    type: application
+    urls:
+    - https://github.com/gaevans-ebay/anchore-charts/releases/download/ecs-inventory-0.0.7/ecs-inventory-0.0.7.tgz
+    version: 0.0.7
+  - apiVersion: v2
     appVersion: 1.3.0
     created: "2024-04-11T22:49:29.223741822Z"
     description: A Helm chart for the Anchore ECS Inventory, which gathers an inventory
@@ -3305,6 +3349,60 @@ entries:
     - https://github.com/gaevans-ebay/anchore-charts/releases/download/ecs-inventory-0.0.6/ecs-inventory-0.0.6.tgz
     version: 0.0.6
   enterprise:
+  - apiVersion: v2
+    appVersion: 5.7.0
+    created: "2024-07-16T16:58:56.640745268Z"
+    dependencies:
+    - condition: postgresql.chartEnabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~12.5
+    - alias: ui-redis
+      condition: ui-redis.chartEnabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~17.11
+    - condition: feeds.chartEnabled
+      import-values:
+      - child: service
+        parent: feeds.service
+      - child: anchoreConfig.internalServicesSSL
+        parent: feeds.anchoreConfig.internalServicesSSL
+      name: feeds
+      repository: '@anchore'
+      version: ~2
+    description: 'Anchore Enterprise is a complete container security workflow solution
+      for professional teams. Easily integrating with CI/CD systems, it allows developers
+      to bolster security without compromising velocity and enables security teams
+      to audit and verify compliance in real-time. It is based on Anchore Engine,
+      an open-source image inspection and scanning tool. '
+    digest: 7f866a1a0546a39719b0ff886e729f13b233b62fc0adc7c14f0c42404981d21d
+    home: https://anchore.com
+    icon: https://anchore.com/wp-content/uploads/2016/08/anchore.png
+    keywords:
+    - analysis
+    - docker
+    - anchore
+    - anchore-engine
+    - anchore-enterprise
+    - image
+    - security
+    - vulnerability
+    - scanner
+    kubeVersion: 1.23.x - 1.30.x || 1.23.x-x - 1.30.x-x
+    maintainers:
+    - email: zach@anchore.com
+      name: zhill
+    - email: bradyt@anchore.com
+      name: btodhunter
+    - email: hung.nguyen@anchore.com
+      name: hnguyen
+    name: enterprise
+    sources:
+    - https://github.com/anchore/anchore-charts/tree/master/stable/enterprise
+    urls:
+    - https://github.com/gaevans-ebay/anchore-charts/releases/download/enterprise-2.8.0/enterprise-2.8.0.tgz
+    version: 2.8.0
   - apiVersion: v2
     appVersion: 5.4.1
     created: "2024-04-19T20:07:28.148748933Z"
@@ -3469,6 +3567,39 @@ entries:
     version: 2.5.2
   feeds:
   - apiVersion: v2
+    appVersion: 5.7.0
+    created: "2024-07-16T16:58:56.754404689Z"
+    dependencies:
+    - alias: feeds-db
+      condition: feeds-db.chartEnabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~12.5
+    - alias: gem-db
+      condition: gem-db.chartEnabled,anchoreConfig.feeds.drivers.gem.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~12.5
+    description: Anchore feeds service
+    digest: dc20c7e7033a2666566b289287814e89f1123a41a09ce1dbc89bb06da041d950
+    icon: https://anchore.com/wp-content/uploads/2016/08/anchore.png
+    keywords:
+    - anchore
+    - anchore-feeds
+    kubeVersion: 1.23.x - 1.30.x || 1.23.x-x - 1.30.x-x
+    maintainers:
+    - email: zach@anchore.com
+      name: zhill
+    - email: bradyt@anchore.com
+      name: btodhunter
+    - email: hung.nguyen@anchore.com
+      name: hnguyen
+    name: feeds
+    type: application
+    urls:
+    - https://github.com/gaevans-ebay/anchore-charts/releases/download/feeds-2.7.0/feeds-2.7.0.tgz
+    version: 2.7.0
+  - apiVersion: v2
     appVersion: 5.4.1
     created: "2024-04-19T20:07:28.267594744Z"
     dependencies:
@@ -3535,6 +3666,31 @@ entries:
     - https://github.com/gaevans-ebay/anchore-charts/releases/download/feeds-2.4.1/feeds-2.4.1.tgz
     version: 2.4.1
   k8s-inventory:
+  - apiVersion: v2
+    appVersion: 1.6.2
+    created: "2024-07-16T16:58:56.863627054Z"
+    description: A Helm chart for Kubernetes Automated Inventory, which describes
+      which images are in use in a given Kubernetes Cluster
+    digest: 75d9d73984ed58eaab055e50317b612c9be5ff2db0af906fa5e198e9bb29c299
+    home: https://anchore.com
+    icon: https://anchoreprd.wpengine.com/wp-content/uploads/2021/12/favicon.png
+    keywords:
+    - analysis
+    - docker
+    - anchore
+    - image
+    - inventory
+    - security
+    - scanner
+    maintainers:
+    - email: bradyt@anchore.com
+      name: btodhunter
+    - email: hung.nguyen@anchore.com
+      name: hn23
+    name: k8s-inventory
+    urls:
+    - https://github.com/gaevans-ebay/anchore-charts/releases/download/k8s-inventory-0.4.2/k8s-inventory-0.4.2.tgz
+    version: 0.4.2
   - apiVersion: v2
     appVersion: 1.4.0
     created: "2024-04-19T20:07:28.411499822Z"
@@ -3828,4 +3984,4 @@ entries:
     urls:
     - https://github.com/anchore/anchore-charts/releases/download/kai-0.1.0/kai-0.1.0.tgz
     version: 0.1.0
-generated: "2024-04-19T20:07:28.411694406Z"
+generated: "2024-07-16T16:58:56.863980403Z"
